@@ -19,7 +19,7 @@ jobs:
       run: |
         mkdir build ; cd build
         cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=C:\daScript
-        ninja
+        ninja daScript
         ninja install
     - name: Package Directories
       run: |
