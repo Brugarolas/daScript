@@ -1,0 +1,30 @@
+name: Publish
+on:
+  workflow_dispatch:
+
+jobs:
+  win-build:
+    name: daScript Win Build
+    runs-on: windows-latest
+    steps:
+    - name: "SCM Checkout"
+      uses: actions/checkout@v3
+    - name: "Install CMake and Ninja"
+      uses: lukka/get-cmake@latest
+    - uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: amd64
+        toolset: 14.3
+    - name: "Build: DaScript"
+      run: |
+        mkdir build ; cd build
+        cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=C:\daScript
+        ninja daScript
+        ninja install
+    - name: Package Directories
+      run: |
+        7z a daScript.7z C:\daScript
+    - uses: actions/upload-artifact@v3
+      with:
+        name: daScript
+        path: daScript.7z
